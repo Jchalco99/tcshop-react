@@ -1,21 +1,26 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import React from 'react'
 import './App.css'
-import axios from 'axios'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import HomePage from './pages/HomePage'
+import ProductPage from './pages/ProductPage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import ShoppingCartPage from './pages/ShoppingCartPage';
 
 function App() {
-  const apiUrl = import.meta.env.VITE_API_URL + "/test";
-  const appTitle = import.meta.env.VITE_APP_TITLE;
-  const test = axios.get(apiUrl)
-  console.log(test)
-
   return (
-    <div>
-      <h1>{appTitle}</h1>
-      <p>API URL: {apiUrl}</p>
-    </div>
-  );
+    <React.Fragment>
+      <BrowserRouter>
+        <Routes>
+          <Route path='' element={<HomePage />} />
+          <Route path='/producto/:idProducto' element={<ProductPage />} />
+          <Route path='/cart' element={<ShoppingCartPage />} />
+          <Route path='/login' element={<LoginPage />} />
+          <Route path='/register' element={<RegisterPage />} />
+        </Routes>
+      </BrowserRouter>
+    </React.Fragment>
+  )
 }
 
 export default App
