@@ -2,14 +2,17 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import AuthService from "@/services/AuthService";
+import ReviewService from "@/services/ReviewService";
+import { useNavigate } from "react-router-dom";
 
-function ReviewComponent({ reviews, overallRating }) {
+function ReviewComponent({ reviews, overallRating, idProducto }) {
   const token = localStorage.getItem("token");
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const [calificacion, setCalificacion] = useState(0);
   const [comentario, setComentario] = useState("");
-  const [userId, setUserId] = useState({})
+  const [userId, setUserId] = useState(null);
 
   const formatDate = (inputDate) => {
     const date = new Date(inputDate);
@@ -32,15 +35,44 @@ function ReviewComponent({ reviews, overallRating }) {
       try {
         const userInfo = await AuthService.getUserInfo();
         setUserId(userInfo.id);
+        setLoading(false);
+        console.log('User ID:', userInfo.id);
       } catch (error) {
-        console.error("No se pudo obtener el ID del usuario: " + error.message);
-      } finally {
+        console.error("No se pudo obtener la información del usuario: " + error);
         setLoading(false);
       }
     };
   
     fetchUserInfo();
   }, []);
+
+  const saveReview = (e) => {
+    e.preventDefault();
+    
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("No se encontró el token de autenticación.");
+      alert("No estás autenticado. Por favor, inicia sesión.");
+      return;
+    }
+  
+    const review = {
+      calificacion,
+      comentario,
+      producto: { idProducto: idProducto },
+      usuario: { id: userId },
+    };
+  
+    ReviewService.createReview(review)
+    .then((response) => {
+      console.log("Review enviada:", response.data);
+      navigate("/producto/" + idProducto + "#reviews");
+      window.location.reload();
+    })
+      .catch((error) => {
+        console.error("Error al enviar la reseña:", error);
+      });
+  };
 
   if (loading) {
     return (
@@ -143,36 +175,36 @@ function ReviewComponent({ reviews, overallRating }) {
 
       {/* Review Form */}
       {token && (
-        <form className="rounded-lg border p-6">
-          <h3 className="mb-4 text-xl font-semibold">Escribe una Review</h3>
-          <div className="space-y-4">
-            <Textarea
-              placeholder="Tu Review"
-              className="min-h-[100px]"
-              value={comentario}
-              onChange={(e) => setComentario(e.target.value)}
-              required
-            />
-            <div className="flex items-center gap-2">
-              <span>Tu Calificación:</span>
-              <div className="flex">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <button
-                    type="button"
-                    key={i}
-                    onClick={() => setCalificacion(i + 1)}
-                    className={`text-2xl ${i < calificacion ? "text-[#0ef]" : "text-gray-200"}`}
-                  >
-                    ★
-                  </button>
-                ))}
-              </div>
+        <form className="rounded-lg border p-6" onSubmit={saveReview}>
+        <h3 className="mb-4 text-xl font-semibold">Escribe una Review</h3>
+        <div className="space-y-4">
+          <Textarea
+            placeholder="Tu Review"
+            className="min-h-[100px]"
+            value={comentario}
+            onChange={(e) => setComentario(e.target.value)}
+            required
+          />
+          <div className="flex items-center gap-2">
+            <span>Tu Calificación:</span>
+            <div className="flex">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <button
+                  type="button"
+                  key={i}
+                  onClick={() => setCalificacion(i + 1)}
+                  className={`text-2xl ${i < calificacion ? "text-[#0ef]" : "text-gray-200"}`}
+                >
+                  ★
+                </button>
+              ))}
             </div>
-            <Button type="submit" className="bg-[#1f293a] hover:bg-[#0ef]">
-              Enviar
-            </Button>
           </div>
-        </form>
+          <Button type="submit" className="bg-[#1f293a] hover:bg-[#0ef]">
+            Enviar
+          </Button>
+        </div>
+      </form>
       )}
     </div>
   );

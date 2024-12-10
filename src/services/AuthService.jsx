@@ -36,6 +36,10 @@ class AuthService {
     }
   };
 
+  register(user) {
+    return axios.post(AUTH_API_URL + '/register', user)
+  }
+
   logout() {
     localStorage.removeItem("token");
     delete axios.defaults.headers.common["Authorization"];
@@ -51,16 +55,16 @@ class AuthService {
     try {
       const response = await axios.post(
         `${AUTH_API_URL}/user-info`,
-        null,
+        {"token": token},
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
           },
           withCredentials: true,
         }
       );
-  
+
       return response.data;
     } catch (error) {
       console.error("Error al obtener la información del usuario:", error);

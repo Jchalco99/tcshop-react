@@ -7,8 +7,16 @@ class ProductoService {
         return axios.get(PRODUCTO_BASE_REST_API_URL)
     }
 
+    getProductosBySede(idSede) {
+        return axios.get(PRODUCTO_BASE_REST_API_URL + "/sede/" + idSede)
+    }
+
     getProductoById(productoId) {
         return axios.get(PRODUCTO_BASE_REST_API_URL + '/' + productoId)
+    }
+
+    getProductoByTienda(idTienda) {
+        return axios.get(PRODUCTO_BASE_REST_API_URL + "/tienda/" + idTienda)
     }
 }
 

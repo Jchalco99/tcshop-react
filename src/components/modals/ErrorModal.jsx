@@ -22,9 +22,11 @@ function ErrorModal({ isOpen, onClose, title, description }) {
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogAction onClick={onClose}>Entendido</AlertDialogAction>
+          <AlertDialogAction className="bg-[#1f293a] hover:bg-red-600" onClick={onClose}>Entendido</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
   );
 }
+
+export default ErrorModal;

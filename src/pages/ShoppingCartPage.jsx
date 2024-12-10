@@ -28,7 +28,7 @@ function ShoppingCartPage() {
           className="mb-8 inline-flex items-center gap-2 text-gray-600 hover:text-gray-900"
         >
           <ArrowLeft className="h-4 w-4" />
-          Continue Shopping
+          Volver
         </a>
 
         {cartItems.length === 0 ? (

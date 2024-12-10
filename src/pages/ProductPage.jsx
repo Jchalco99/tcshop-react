@@ -6,6 +6,7 @@ import ProductoService from "@/services/ProductoService";
 import { useParams } from "react-router-dom";
 import Layout from "./Layout";
 import ReviewService from "@/services/ReviewService";
+import { ArrowLeft } from "lucide-react";
 
 function ProductPage() {
   const [producto, setProducto] = useState({});
@@ -62,6 +63,16 @@ function ProductPage() {
   return (
     <Layout>
       <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4">
+          <a
+            href="/"
+            className="mb-8 inline-flex items-center gap-2 text-gray-600 hover:text-gray-900"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Volver
+          </a>
+        </div>
+
         {/* Breadcrumb */}
         <nav className="mb-8 flex items-center gap-2 text-sm">
           <a href="/" className="text-gray-500 hover:text-gray-700">
@@ -95,7 +106,7 @@ function ProductPage() {
 
         {/* Reviews Section */}
         <div id="reviews">
-          <ReviewComponent reviews={reviews} overallRating={average} />
+          <ReviewComponent reviews={reviews} overallRating={average} idProducto={idProducto} />
         </div>
       </div>
     </Layout>

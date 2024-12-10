@@ -1,4 +1,4 @@
-import { Heart, RefreshCw, Eye, ShoppingCart } from 'lucide-react'
+import { Heart, Eye, ShoppingCart } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Link } from 'react-router-dom'
 

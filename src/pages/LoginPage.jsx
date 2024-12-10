@@ -4,11 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from 'react-router-dom'
 import axios from "axios";
 import AuthService from "@/services/AuthService";
+import ErrorModal from "@/components/modals/ErrorModal";
 
 function LoginPage() {
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,12 +21,12 @@ function LoginPage() {
 
   const handleSubmit = async(e) => {
     e.preventDefault();
-    setError(null)
 
     try {
       await AuthService.login(identifier, password);
       navigate('/')
     } catch(err) {
+      setIsErrorModalOpen(true);
       console.log("Error:", err.message)
     }
   };
@@ -75,8 +76,6 @@ function LoginPage() {
             </Link>
           </div>
 
-          {error && <p className="error-message">{error}</p>}
-
           <Button
             type="submit"
             className="w-full bg-[#0ef] text-[#1f293a] hover:bg-[#0ef]/90"
@@ -94,6 +93,13 @@ function LoginPage() {
           </Link>
         </div>
       </div>
+
+      <ErrorModal
+        isOpen={isErrorModalOpen}
+        onClose={() => setIsErrorModalOpen(false)}
+        title="Ocurrio un error"
+        description="Verifica si tus datos son correctos o si activaste tu cuenta desde tu correo"
+      />
     </div>
   );
 }
