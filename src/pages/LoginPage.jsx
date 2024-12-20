@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from 'react-router-dom'
-import axios from "axios";
 import AuthService from "@/services/AuthService";
 import ErrorModal from "@/components/modals/ErrorModal";
 

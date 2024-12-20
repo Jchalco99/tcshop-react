@@ -76,7 +76,7 @@ function HeaderComponent() {
                   </span>
                 </Button>
               </Link>
-              <Link to="/user">
+              <Link to="#">
                 <Button variant="ghost" size="icon" className="text-white hover:text-[#0ef]">
                   <User className="h-5 w-5" />
                 </Button>
